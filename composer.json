@@ -8,7 +8,8 @@
         "widget",
         "yii2-dynamicform",
         "copy DOM element",
-        "yii2 dynamic form"
+        "yii2 dynamic form",
+        "Dzil Fork"
     ],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
