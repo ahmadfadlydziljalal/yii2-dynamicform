@@ -469,6 +469,28 @@
                 $(this).numberControl(configNumberControl);
             });
         }
+
+        // kartik datecontrol
+        var $hasDateControl = $(widgetOptionsRoot.widgetItem).find('[data-krajee-datecontrol]');
+        if ($hasDateControl.length > 0) {
+            $hasDateControl.each(function() {
+                var id = $(this).attr('id');
+                var dcElementOptions = eval($(this).attr('data-krajee-datecontrol'));
+                if (id.indexOf(dcElementOptions.idSave) < 0) {
+                    // initialize the NEW DateControl element
+                    var cdNewOptions = $.extend(true, {}, dcElementOptions);
+                    $types=cdNewOptions.type;
+                    if($types=='datetime'){
+                        $(this).parent().datetimepicker(eval($(this).attr('data-krajee-datetimepicker')));
+                    }else{
+                        $(this).parent().kvDatepicker(eval($(this).attr('data-krajee-kvdatepicker')));
+                    }
+                    cdNewOptions.idSave = $(this).parent().next().attr('id');
+                    $(this).removeAttr('value name data-krajee-datecontrol');
+                    $(this).datecontrol(cdNewOptions);
+                }
+            });
+        }
     };
 
 })(window.jQuery);
