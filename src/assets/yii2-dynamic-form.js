@@ -309,7 +309,7 @@
     var _restoreSpecialJs = function(widgetOptions) {
         var widgetOptionsRoot = _getWidgetOptionsRoot(widgetOptions);
 
-        // "kartik-v/yii2-widget-datepicker"
+        // "kartik-v/yii2-widget-datepicker" yang lama
         var $hasDatepicker = $(widgetOptionsRoot.widgetItem).find('[data-krajee-datepicker]');
         if ($hasDatepicker.length > 0) {
             $hasDatepicker.each(function() {
@@ -351,9 +351,40 @@
 
                 // re-init kvDatepicker
                 $input.kvDatepicker(options);
+
+                // ==== tambahan: sinkronisasi ke hidden input DateControl ====
+                var $hiddenInput = $input.parent().next();
+                if ($hiddenInput.hasClass('datecontrol-save-options')) {
+                    // helper manual kalau ev.format tidak ada
+                    var formatDateManual = function(d) {
+                        const yyyy = d.getFullYear();
+                        const mm = String(d.getMonth() + 1).padStart(2, "0");
+                        const dd = String(d.getDate()).padStart(2, "0");
+                        return yyyy + "-" + mm + "-" + dd;
+                    };
+
+                    // pastikan tidak bind ganda
+                    $input.off("changeDate._dynform clearDate._dynform");
+
+                    // event pilih tanggal
+                    $input.on("changeDate._dynform", function(ev) {
+                        if (ev.date) {
+                            var formatted = ev.format
+                                ? ev.format("yyyy-mm-dd")
+                                : formatDateManual(ev.date);
+                            $hiddenInput.val(formatted).trigger("change");
+                        } else {
+                            $hiddenInput.val("").trigger("change");
+                        }
+                    });
+
+                    // event clear
+                    $input.on("clearDate._dynform", function() {
+                        $hiddenInput.val("").trigger("change");
+                    });
+                }
             });
         }
-
 
 
         // "kartik-v/yii2-widget-timepicker"
