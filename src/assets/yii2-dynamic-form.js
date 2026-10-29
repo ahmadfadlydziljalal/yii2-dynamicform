@@ -39,11 +39,11 @@
         },
 
         addItem: function (widgetOptions, e, $elem) {
-           _addItem(widgetOptions, e, $elem);
+            _addItem(widgetOptions, e, $elem);
         },
 
         deleteItem: function (widgetOptions, e, $elem) {
-           _deleteItem(widgetOptions, e, $elem);
+            _deleteItem(widgetOptions, e, $elem);
         },
 
         updateContainer: function () {
@@ -187,7 +187,7 @@
                 matches[2] = matches[2].substring(1, matches[2].length - 1);
                 var identifiers = matches[2].split('-');
                 identifiers[0] = index;
-                
+
                 if (identifiers.length > 1) {
                     var widgetsOptions = [];
                     $elem.parents('div[data-dynamicform]').each(function(i){
@@ -196,7 +196,9 @@
 
                     widgetsOptions = widgetsOptions.reverse();
                     for (var i = identifiers.length - 1; i >= 1; i--) {
-                        identifiers[i] = $elem.closest(widgetsOptions[i].widgetItem).index();
+                        if(typeof widgetsOptions[i] !== 'undefined'){
+                           identifiers[i] = $elem.closest(widgetsOptions[i].widgetItem).index();
+                       }
                     }
                 }
 
@@ -213,7 +215,7 @@
                 $(this).removeClass('field-' + id).addClass('field-' + newID);
             });
             // update "for" attribute
-            $elem.closest(widgetOptions.widgetItem).find("label[for='" + id + "']").attr('for',newID); 
+            $elem.closest(widgetOptions.widgetItem).find("label[for='" + id + "']").attr('for',newID);
         }
 
         return newID;
@@ -238,7 +240,10 @@
 
                     widgetsOptions = widgetsOptions.reverse();
                     for (var i = identifiers.length - 1; i >= 1; i--) {
-                        identifiers[i] = $elem.closest(widgetsOptions[i].widgetItem).index();
+
+                       if(typeof widgetsOptions[i] !== 'undefined'){
+                           identifiers[i] = $elem.closest(widgetsOptions[i].widgetItem).index();
+                       }
                     }
                 }
 
@@ -316,7 +321,14 @@
                 $(this).parent().removeData().datepicker('remove');
                 $(this).parent().datepicker(eval($(this).attr('data-krajee-datepicker')));
             });
-        }
+        });*/
+
+        // "kartik-v/yii2-widget-datepicker"
+        var datePickers = $(widgetOptionsRoot.widgetItem).find('[data-krajee-kvdatepicker]');
+        datePickers.each(function(index, el) {
+            //$(this).parent().removeData().kvDatepicker('remove');
+            $(this).parent().kvDatepicker(eval($(this).attr('data-krajee-kvdatepicker')));
+        });
 
         // "kartik-v/yii2-widget-datepicker" yang baru
         var $hasKvDatepicker = $(widgetOptionsRoot.widgetItem).find('[data-krajee-kvdatepicker]');
