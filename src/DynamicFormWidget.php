@@ -234,9 +234,26 @@ class DynamicFormWidget extends \yii\base\Widget
         $this->_options['template'] = trim($document->saveHTML());
 
         if (isset($this->_options['min']) && $this->_options['min'] === 0 && $this->model->isNewRecord) {
-            $content = $this->removeItems($content);
-        }
 
+            /**
+             * This is will be handle for ajax request,
+             * if all attribute from formFields at least one attribute is not emtpy,
+             * prevent the html element to be removed.
+             */
+            $isRemovedItems = true;
+            foreach ($this->formFields as $field) {
+                if(!empty($this->model->{$field})) {
+                    $isRemovedItems = false;
+                    break;
+                }
+            }
+
+            if($isRemovedItems){
+                $content = $this->removeItems($content);
+            }
+
+        }
+        
         $this->hashOptions();
         $view = $this->getView();
         $widgetRegistered = $this->registerHashVarWidget();

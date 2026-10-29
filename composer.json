@@ -9,7 +9,7 @@
         "yii2-dynamicform",
         "copy DOM element",
         "yii2 dynamic form",
-        "Dzil Fork"
+        "Dev Dev Dzil"
     ],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
@@ -29,9 +29,9 @@
         }
     ],
     "require": {
-	    "yiisoft/yii2": "*",
-		"symfony/dom-crawler": "*",
-		"symfony/css-selector": "*"
+        "yiisoft/yii2": "~2.0.5",
+        "symfony/css-selector": "*",
+        "symfony/dom-crawler": "*"
     },
     "autoload": {
         "psr-4": {
